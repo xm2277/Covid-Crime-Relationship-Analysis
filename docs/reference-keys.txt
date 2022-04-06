@@ -1,7 +1,11 @@
 introduction
 data-sources
 data-transformation
+<<<<<<< HEAD
 visualization
+=======
+Visualization
+>>>>>>> 2e9719e2a77b6c1f17a089b59a2b01326af7daa8
 results
 interactive-component
 conclusion
