@@ -1,6 +1,6 @@
 --- 
-title: "YOUR TITLE HERE"
-author: "YOUR NAMES HERE"
+title: "MRI-Digital-Transaction"
+author: "Victoria Meng & Jessie Yu"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 ---
