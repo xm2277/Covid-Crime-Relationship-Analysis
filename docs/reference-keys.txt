@@ -1,7 +1,7 @@
 introduction
 data-sources
 data-transformation
-visualizing-graphs
+Visualization
 results
 interactive-component
 conclusion
