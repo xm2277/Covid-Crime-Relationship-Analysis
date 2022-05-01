@@ -1,0 +1,179 @@
+# Data sources 
+
+```{r}
+library(tidyverse)
+library(dplyr)
+library(readr)
+library(ggplot2)
+library(devtools)
+```
+
+```{r}
+data_by_day <- read_csv("data/data-by-day.csv")
+head(data_by_day)
+```
+
+# first: the overall view of the summation over the 5 districts(BX, BK, MN, QN, SI)
+
+```{r}
+#data_transform <- data_by_day %>% pivot_longer(data_by_day, names_to = 'city', values_to = 'count')
+overall_transform <- data_by_day  %>% pivot_longer(!date_of_interest, names_to = 'cases', values_to = 'count')
+
+df <- overall_transform %>%
+  mutate(areas = case_when(
+    startsWith(cases, "BX_") ~ "BX",
+    startsWith(cases, "BK_") ~ "BK",
+    startsWith(cases, "MN_") ~ "MN",
+    startsWith(cases, "QN_") ~ "QN",
+    startsWith(cases, "SI_") ~ "SI",
+    TRUE~ "sum_nyc"
+    ))
+df1 <- df %>% transform(cases=str_replace(cases,"BX_","")) %>% 
+  transform(cases=str_replace(cases,"BK_","")) %>% 
+  transform(cases=str_replace(cases,"MN_","")) %>%  
+  transform(cases=str_replace(cases,"QN_","")) %>%  
+  transform(cases=str_replace(cases,"SI_",""))
+df1
+```
+#the final output data:
+
+```{r}
+df2 = df1 %>% pivot_wider(names_from = cases, values_from = count)
+df2
+```
+
+# maybe wanna to drop the total_nyc value & include & compare only 5 districts
+
+```{r}
+df3 = df2 %>% filter(areas != "sum_nyc")
+#drop the incomplete column
+df3 <- df3[ -c(15) ]
+```
+
+# deal with the missing value/NA in the dataset & draw the plot to see the missing pattern:
+
+```{r}
+colSums(is.na(df3)) %>%
+  sort(decreasing = TRUE)
+```
+
+#consider by the sum:
+```{r}
+library(dplyr)
+total_sum <- select(data_by_day, 1:11)
+total_sum_transform <- total_sum %>% pivot_longer(!date_of_interest, names_to = 'cases', values_to = 'count') %>% 
+total_sum_transform
+```
+#By area:
+```{r}
+bx_sum <- select(data_by_day, 1, 12:22)
+bx_transform <- bx_sum %>% 
+  pivot_longer(!date_of_interest, names_to = 'cases', values_to = 'count') %>% 
+  transform(cases=str_replace(cases,"BX_","")) 
+
+bx_transform$Area <- "BX"
+bx_transform
+```
+
+```{r}
+#brooklyn area
+bk_sum <- select(data_by_day, 1, 23:33)
+bk_transform <- bk_sum %>% 
+  pivot_longer(!date_of_interest, names_to = 'cases', values_to = 'count') %>% 
+  transform(cases=str_replace(cases,"BK_",""))
+bk_transform$Area <- "BK"
+bk_transform
+```
+
+```{r}
+#install.packages('data.table')
+library(data.table)
+setDT(bx_transform)
+setDT(bk_transform)
+
+bk_transform[bx_transform, on = c('date_of_interest','cases')]
+```
+
+```{r}
+#manhatton
+mn_sum <- select(data_by_day, 1, 34:44)
+mn_transform <- mn_sum %>% 
+  pivot_longer(!date_of_interest, names_to = 'cases', values_to = 'count') %>% 
+  transform(cases=str_replace(cases,"MN_",""))
+mn_transform$Area <- "MN"
+mn_transform
+```
+
+```{r}
+#queens
+qn_sum <- select(data_by_day, 1, 45:55)
+qn_transform <- qn_sum %>% 
+  pivot_longer(!date_of_interest, names_to = 'cases', values_to = 'count') %>% 
+  transform(cases=str_replace(cases,"QN_",""))
+qn_transform$Area <- "QN"
+qn_transform
+```
+```{r}
+#si
+si_sum <- select(data_by_day, 1, 56:66)
+si_transform <- si_sum %>% 
+  pivot_longer(!date_of_interest, names_to = 'cases', values_to = 'count') %>% 
+  transform(cases=str_replace(cases,"SI_",""))
+si_transform$Area <- "SI"
+si_transform
+```
+
+# After modifying the dataset by area, we can join them together by date or analyze on each of it separately.
+
+## the second dataset: now_weekly_breakthrough
+
+```{r}
+now_weekly_breakthrough <- read_csv("data/now-weekly-breakthrough.csv")
+#head(now_weekly_breakthrough)
+#install.packages('janitor')
+library(janitor)
+
+#can be done by simply
+now_weekly_breakthrough <- clean_names(now_weekly_breakthrough)
+now_weekly_breakthrough
+
+```
+```{r}
+overall_transform1 <- now_weekly_breakthrough  %>% pivot_longer(!week_of_diagnosis, names_to = 'cases', values_to = 'count')
+overall_transform1
+```
+
+
+```{r}
+df5 <- overall_transform1 %>%
+  mutate(vacci_status = case_when(
+    startsWith(cases, "vaccinated_boosted") ~ "fully_vaccinated",
+    startsWith(cases, "Vaccinated_unboosted") ~ "unboosted",
+    startsWith(cases, "Unvaccinated") ~ "unvaccinated",
+    TRUE~ "nyc_wide"
+    ))
+
+df6 <- df5 %>% transform(cases=str_replace(cases,"vaccinated_boosted_","")) %>% 
+  transform(cases=str_replace(cases,"vaccinated_unboosted_","")) %>% 
+  transform(cases=str_replace(cases,"Unvaccinated_","")) %>%  
+  transform(cases=str_replace(cases,"citywide_",""))
+df6
+```
+
+```{r}
+df7 = df6 %>% filter(cases!="incomplete") 
+df7
+```
+#there is no missing value:
+
+```{r}
+df7$count <- as.numeric(df7$count)
+df7$count
+```
+
+```{r}
+# by column
+colSums(is.na(df7)) %>%
+  sort(decreasing = TRUE)
+```
+
