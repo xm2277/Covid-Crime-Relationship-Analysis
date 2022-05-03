@@ -55,7 +55,6 @@ colSums(is.na(df3)) %>%
 ```
 
 
-
 *Now_weekly_breakthrough* Dataset:
 
 To facilitate our analysis on the COVID-19 weekly breakthrough csv file, we first clean all the column names of the dataset. Then we use the pivot longer method to transform all cases columns into row observations and record their values to a new column variable called count. Afterwards, we use the `case when` function to create a new categorical variable called *vacci_status* to divide this dataset into three new categories. All case names that start with *vaccinated_boosted* are classified as *fully_vaccinated*; all case names that start with *vaccinated_unboosted* are classified as *unboosted*; all case names that start with *unvaccinated* are classified as *unboosted*; and the others are recorded as *nyc_wide*(these observations are summarized category which show the total amount of cases shown in the NYC) Afterwards, to keep this dataset tidy and informative, we clean the cases names into a uniform form and we drop useless columns(such as *incomplete*).

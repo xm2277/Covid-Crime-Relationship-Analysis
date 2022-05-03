@@ -70,7 +70,6 @@ data_by_day
 ```{r, echo = T}
 library(corrplot)
 library(RColorBrewer)
-
 source("http://www.sthda.com/upload/rquery_cormat.r")
 mydata <- data_by_day[, c(3:8)]
 require("corrplot")
