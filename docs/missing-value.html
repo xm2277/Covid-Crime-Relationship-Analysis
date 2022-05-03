@@ -244,25 +244,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>The missing value occurs from 02/29/2020 to 04/25/2022. Between this time frame, varaible <em>HOSP_COUNT_7DAY_AVG</em> records are missing over the 5 counties.</p>
 <p>To deal with those missing value, as we are not quite interested in variable <em>HOSP_COUNT_7DAY_AVG</em>, we will not be bothered by the existence of missing values and will keep all the records in the dataset to continue further analysis.</p>
 <p>Consider about the correlation between the variables in the dataset:</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="missing-value.html#cb20-1" aria-hidden="true" tabindex="-1"></a>data_by_day</span></code></pre></div>
-<pre><code>## # A tibble: 3,935 × 14
-##    date_of_interest areas CASE_COUNT PROBABLE_CASE_COUNT HOSPITALIZED_COUNT
-##    &lt;chr&gt;            &lt;chr&gt;      &lt;dbl&gt;               &lt;dbl&gt;              &lt;dbl&gt;
-##  1 02/29/2020       BX             0                   0                  0
-##  2 02/29/2020       BK             0                   0                  1
-##  3 02/29/2020       MN             1                   0                  0
-##  4 02/29/2020       QN             0                   0                  0
-##  5 02/29/2020       SI             0                   0                  0
-##  6 03/01/2020       BX             0                   0                  1
-##  7 03/01/2020       BK             0                   0                  0
-##  8 03/01/2020       MN             0                   0                  0
-##  9 03/01/2020       QN             0                   0                  0
-## 10 03/01/2020       SI             0                   0                  0
-## # … with 3,925 more rows, and 9 more variables: DEATH_COUNT &lt;dbl&gt;,
-## #   PROBABLE_DEATH_COUNT &lt;dbl&gt;, CASE_COUNT_7DAY_AVG &lt;dbl&gt;,
-## #   ALL_CASE_COUNT_7DAY_AVG &lt;dbl&gt;, HOSP_COUNT_7DAY_AVG &lt;lgl&gt;,
-## #   DEATH_COUNT_7DAY_AVG &lt;dbl&gt;, ALL_DEATH_COUNT_7DAY_AVG &lt;dbl&gt;,
-## #   PROBABLE_CASE_COUNT_7DAY_AVG &lt;dbl&gt;, HOSPITALIZED_COUNT_7DAY_AVG &lt;dbl&gt;</code></pre>
 <div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="missing-value.html#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(corrplot)</span>
 <span id="cb22-2"><a href="missing-value.html#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(RColorBrewer)</span>
 <span id="cb22-3"><a href="missing-value.html#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;http://www.sthda.com/upload/rquery_cormat.r&quot;</span>)</span>
