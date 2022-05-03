@@ -1,1 +1,79 @@
 # Missing Value
+
+
+
+```{r}
+#install.packages("naniar")
+library(naniar)
+library(tidyverse)
+library(dplyr)
+library(readr)
+library(ggplot2)
+library(devtools)
+
+```
+
+All the missing values come from one column: *HOSP_COUNT_7DAY_AVG*. The total amount of missing value is 3935 for this dataset.
+
+```{r}
+data_by_day <- read_csv("data/data_by_day_transform_dataset.csv")
+```
+
+```{r, echo = TRUE}
+colSums(is.na(data_by_day)) %>%
+  sort(decreasing = TRUE)
+```
+
+Using groupby *areas* to see the distribution of missing value:
+
+```{r, echo = T}
+data_by_day %>% 
+  select(HOSP_COUNT_7DAY_AVG, areas) %>%  
+  group_by(areas) %>% miss_var_summary()
+```
+
+
+
+```{r, echo = T}
+gg_miss_var(data_by_day,
+            facet = areas)
+```
+
+The missing values are equally distributed among BX, BK, MN, QN, SI counties, which more likely to be happen on the same date.
+
+```{r, echo = T}
+missing_range <-data_by_day %>% 
+  select(HOSP_COUNT_7DAY_AVG, date_of_interest) %>%  
+  group_by(date_of_interest) %>% miss_var_summary()
+```
+
+
+```{r, echo = T}
+head(missing_range)
+```
+
+
+```{r, echo = T}
+tail(missing_range)
+```
+
+The missing value occurs from 02/29/2020 to 04/25/2022. Between this time frame, varaible *HOSP_COUNT_7DAY_AVG* records are missing over the 5 counties. 
+
+To deal with those missing value, as we are not quite interested in variable *HOSP_COUNT_7DAY_AVG*, we will not be bothered by the existence of missing values and will keep all the records in the dataset to continue further analysis. 
+
+Consider about the correlation between the variables in the dataset:
+
+```{r, echo = T}
+data_by_day
+```
+
+```{r, echo = T}
+library(corrplot)
+library(RColorBrewer)
+
+source("http://www.sthda.com/upload/rquery_cormat.r")
+mydata <- data_by_day[, c(3:8)]
+require("corrplot")
+rquery.cormat(mydata)
+```
+It is quite obvious to see that all cases are positive correlated and the correlation is quite strong for the count of cases and their 7 day count cases under the same category. 
