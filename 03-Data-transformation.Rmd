@@ -43,7 +43,7 @@ df2 = df1 %>% pivot_wider(names_from = cases, values_from = count)
 df3 = df2 %>% filter(areas != "sum_nyc")
 #drop the incomplete column
 df3 <- df3[ -c(15) ]
-write.csv(df3,"/Users/victoriameng/Desktop/untitled folder/data_by_day_over_areas.csv", row.names = FALSE)
+write.csv(df3,"data/data_by_day_over_areas.csv", row.names = FALSE)
 ```
 
 
