@@ -54,7 +54,7 @@ colSums(is.na(df3)) %>%
   sort(decreasing = TRUE)
 ```
 
-#consider by the sum:
+
 
 *Now_weekly_breakthrough* Dataset:
 
