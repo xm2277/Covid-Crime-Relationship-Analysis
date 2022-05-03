@@ -265,11 +265,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## #   PROBABLE_CASE_COUNT_7DAY_AVG &lt;dbl&gt;, HOSPITALIZED_COUNT_7DAY_AVG &lt;dbl&gt;</code></pre>
 <div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="missing-value.html#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(corrplot)</span>
 <span id="cb22-2"><a href="missing-value.html#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(RColorBrewer)</span>
-<span id="cb22-3"><a href="missing-value.html#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-4"><a href="missing-value.html#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;http://www.sthda.com/upload/rquery_cormat.r&quot;</span>)</span>
-<span id="cb22-5"><a href="missing-value.html#cb22-5" aria-hidden="true" tabindex="-1"></a>mydata <span class="ot">&lt;-</span> data_by_day[, <span class="fu">c</span>(<span class="dv">3</span><span class="sc">:</span><span class="dv">8</span>)]</span>
-<span id="cb22-6"><a href="missing-value.html#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(<span class="st">&quot;corrplot&quot;</span>)</span>
-<span id="cb22-7"><a href="missing-value.html#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="fu">rquery.cormat</span>(mydata)</span></code></pre></div>
+<span id="cb22-3"><a href="missing-value.html#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;http://www.sthda.com/upload/rquery_cormat.r&quot;</span>)</span>
+<span id="cb22-4"><a href="missing-value.html#cb22-4" aria-hidden="true" tabindex="-1"></a>mydata <span class="ot">&lt;-</span> data_by_day[, <span class="fu">c</span>(<span class="dv">3</span><span class="sc">:</span><span class="dv">8</span>)]</span>
+<span id="cb22-5"><a href="missing-value.html#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(<span class="st">&quot;corrplot&quot;</span>)</span>
+<span id="cb22-6"><a href="missing-value.html#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="fu">rquery.cormat</span>(mydata)</span></code></pre></div>
 <p><img src="finalproj_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
 <pre><code>## $r
 ##                      CASE_COUNT_7DAY_AVG CASE_COUNT PROBABLE_CASE_COUNT
