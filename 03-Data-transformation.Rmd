@@ -1,1 +1,153 @@
 # Data transformation
+
+
+```{r,  echo=T}
+library(tidyverse)
+library(dplyr)
+library(readr)
+library(ggplot2)
+library(devtools)
+```
+
+```{r, eval = FALSE, echo=T}
+data_by_day <- read_csv("data/data-by-day.csv")
+head(data_by_day)
+```
+
+ *data_by_day_over_areas* Dataset:
+ 
+- first: the overall view of the summation over the 5 districts(BX, BK, MN, QN, SI)
+
+We use the `pivot longer` method here to transform the dataset into the tidy version. Meanwhile, we clean up so many category names by dropping the prefix(starts with BX, BK, MN, QN, SI) to decrease the size of the dataset. In addition,  to keep this transformed dataset clean and as informative as possible, we generate a new variable called areas based on the district the row of recording belongs to. At the same time, we remove all the rows that are the summation of counts over the 5 districts. 
+
+```{r, eval = FALSE, echo=T}
+overall_transform <- data_by_day  %>% pivot_longer(!date_of_interest, names_to = 'cases', values_to = 'count')
+
+df <- overall_transform %>%
+  mutate(areas = case_when(
+    startsWith(cases, "BX_") ~ "BX",
+    startsWith(cases, "BK_") ~ "BK",
+    startsWith(cases, "MN_") ~ "MN",
+    startsWith(cases, "QN_") ~ "QN",
+    startsWith(cases, "SI_") ~ "SI",
+    TRUE~ "sum_nyc"
+    ))
+df1 <- df %>% transform(cases=str_replace(cases,"BX_","")) %>% 
+  transform(cases=str_replace(cases,"BK_","")) %>% 
+  transform(cases=str_replace(cases,"MN_","")) %>%  
+  transform(cases=str_replace(cases,"QN_","")) %>%  
+  transform(cases=str_replace(cases,"SI_",""))
+head(df1)
+df2 = df1 %>% pivot_wider(names_from = cases, values_from = count)
+#drop the total_nyc value & include & compare only 5 districts
+df3 = df2 %>% filter(areas != "sum_nyc")
+#drop the incomplete column
+df3 <- df3[ -c(15) ]
+write.csv(df3,"/Users/victoriameng/Desktop/untitled folder/data_by_day_over_areas.csv", row.names = FALSE)
+```
+
+
+Deal with the missing value/NA in the dataset & draw the plot to see the missing pattern:
+
+```{r , eval = FALSE,  echo=T}
+colSums(is.na(df3)) %>%
+  sort(decreasing = TRUE)
+```
+
+#consider by the sum:
+
+*Now_weekly_breakthrough* Dataset:
+
+To facilitate our analysis on the COVID-19 weekly breakthrough csv file, we first clean all the column names of the dataset. Then we use the pivot longer method to transform all cases columns into row observations and record their values to a new column variable called count. Afterwards, we use the `case when` function to create a new categorical variable called *vacci_status* to divide this dataset into three new categories. All case names that start with *vaccinated_boosted* are classified as *fully_vaccinated*; all case names that start with *vaccinated_unboosted* are classified as *unboosted*; all case names that start with *unvaccinated* are classified as *unboosted*; and the others are recorded as *nyc_wide*(these observations are summarized category which show the total amount of cases shown in the NYC) Afterwards, to keep this dataset tidy and informative, we clean the cases names into a uniform form and we drop useless columns(such as *incomplete*).
+Finally, we further divide the dataset into two parts for the results part: one dataset only includes counts on the rate cases; another excludes all the rate observations and only include those counts that recorded in the integer format.
+
+```{r, eval = FALSE,  echo=T}
+now_weekly_breakthrough <- read_csv("data/now-weekly-breakthrough.csv")
+#head(now_weekly_breakthrough)
+#install.packages('janitor')
+library(janitor)
+
+#can be done by simply
+now_weekly_breakthrough <- clean_names(now_weekly_breakthrough)
+head(now_weekly_breakthrough)
+
+overall_transform1 <- now_weekly_breakthrough  %>% 
+  pivot_longer(!week_of_diagnosis, names_to = 'cases', values_to = 'count')
+
+df5 <- overall_transform1 %>%
+  mutate(vacci_status = case_when(
+    startsWith(cases, "vaccinated_boosted") ~ "fully_vaccinated",
+    startsWith(cases, "vaccinated_unboosted") ~ "unboosted",
+    startsWith(cases, "unvaccinated") ~ "unvaccinated",
+    TRUE~ "nyc_wide"
+    ))
+
+df6 <- df5 %>% transform(cases=str_replace(cases,"vaccinated_boosted_","")) %>% 
+  transform(cases=str_replace(cases,"vaccinated_unboosted_","")) %>% 
+  transform(cases=str_replace(cases,"unvaccinated_","")) %>%  
+  transform(cases=str_replace(cases,"citywide_",""))
+df7 = df6 %>% filter(cases!="incomplete") 
+
+df10 = df7[grepl('rate', df7$cases),]
+
+df11 = df10 %>% filter(vacci_status != "nyc_wide")
+
+df8 = df7[!grepl('rate', df7$cases),]
+df8
+df9 = df8 %>% pivot_wider(names_from = cases, values_from = count)
+df9
+write.csv(df11,"data/now_weekly_breakthrough_rate.csv", row.names = FALSE)
+write.csv(df8,"data/now_weekly_breakthrough_transform.csv", row.names = FALSE)
+```
+
+#there is no missing value:
+
+```{r , eval = FALSE,  echo=T}
+# by column
+colSums(is.na(df8)) %>%
+  sort(decreasing = TRUE)
+```
+
+#Further data transformation for plotting 
+
+```{r, eval = FALSE,  echo=T}
+data_by_day <- read_csv("data/data_by_day_transform_dataset.csv")
+data_by_day_over_areas <- read_csv("data/data_by_day_over_areas.csv")
+```
+
+
+
+```{r, eval = FALSE,  echo=T}
+#Total Counts by boroughs 
+data_by_day_totals <- data_by_day %>%
+  select(2:6) %>%
+  pivot_longer(cols = CASE_COUNT:DEATH_COUNT, names_to = "Type", values_to = "Count")  %>%
+  group_by(areas, Type) %>%
+  summarise(totals = sum(Count))
+
+#By month
+data_by_month <- data_by_day %>% 
+   mutate(date_of_interest = as.Date(date_of_interest, "%m/%d/%Y"),
+          month_of_interest = floor_date(date_of_interest, unit = "month")) %>%
+  select(c(15,2,3,5,6)) %>%
+  group_by(areas, month_of_interest) %>%
+  summarise(case_total = sum(CASE_COUNT),
+            hospitalized_total = sum(HOSPITALIZED_COUNT),
+            death_total = sum(DEATH_COUNT))
+
+# change death to negative values 
+data_by_month <- data_by_month %>% 
+  mutate(death_total = death_total*-1)
+
+# only case totals
+case_total_longer <- data_by_month %>%
+  select(1:3)
+```
+
+
+```{r, eval = FALSE,  echo=T}
+# removing case_total, only keeping hospitalized and death totals. 
+data_by_month_longer <- data_by_month %>%
+  select(-case_total) %>%
+  pivot_longer(cols = hospitalized_total:death_total, names_to = "types", values_to = "number")
+```

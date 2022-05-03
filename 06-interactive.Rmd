@@ -1,2 +1,7 @@
 # Interactive component
 
+## Shooting Incidences Analysis Continued
+
+The link below contains interactive plots that compares shooting cases before and after COVID-19 started. More detailed analysis can be find in the link.
+
+[Link to Shiny](https://5293-graphics-final-project.shinyapps.io/graphics-final/)

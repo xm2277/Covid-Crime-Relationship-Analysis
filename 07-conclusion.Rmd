@@ -1,2 +1,20 @@
 # Conclusion
 
+- Main takeaways of our exploration：
+
+Recall important timelines: March 1, 2020, first case confirmed month in NYC; April 2020, first peak since COVID exposure; January 2021, second peak of COVID. 
+Brooklyn and Queens are the worst-affected area in NYC, followed by Manhattan, then Bronx, then Staten Island. 
+Vaccinations might not prevent people getting COVID, instead it could reduce the severity of COVID symptoms which lowers the death rate and hospitalization rate.
+
+After COVID exposure, we observed noticeable incline of hate crimes in NYC towards Asian group after all three timelines related to COVID cases mentioned above, especially in Manhattan, Queens, and Brooklyn. While other types of bias does not seem to be affected by COVID exposure. 
+
+Lastly, shooting incidences drastically increased after the arrive of COVID. Apart from Staten Island, all other four boroughs has surpassed preceding years since 2006. Shooting cases in other four boroughs generally inclined, but not as significant as Brooklyn. 
+
+
+
+- Limitations & Future directions:
+
+We have analyzed the changes in hate crime and shooting incidence in NYC after COVID exposure, and indeed there are patterns to look for. However, we can not be sure that whether this is a causal relationship. Further investigation and research, as well as other statistical methods, should be applied to examine the causal effect. 
+
+
+
