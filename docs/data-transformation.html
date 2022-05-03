@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 3 Data transformation | Covid-Crime-Relationship-Analysis</title>
   <meta name="description" content="Chapter 3 Data transformation | Covid-Crime-Relationship-Analysis" />
-  <meta name="generator" content="bookdown 0.25 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.26.2 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 3 Data transformation | Covid-Crime-Relationship-Analysis" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Victoria Meng &amp; Jessie Yu" />
 
 
-<meta name="date" content="2022-04-06" />
+<meta name="date" content="2022-05-02" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -52,8 +52,82 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.10.0/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-2.5.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.5.1/plotly-latest.min.js"></script>
+<link href="libs/parallel-coordinates-2.1.8/parcoords.css" rel="stylesheet" />
+<script src="libs/parcoords-binding-1.0.0/parcoords.js"></script>
+<script src="libs/d3-5.16.0/d3.min.js"></script>
 
 
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
 
 
 <link rel="stylesheet" href="style.css" type="text/css" />
@@ -69,16 +143,24 @@
       <nav role="navigation">
 
 <ul class="summary">
-<li><a href="./">MRI</a></li>
+<li><a href="./">Covid-Crime-Relationship-Analysis</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction<span></span></a></li>
-<li class="chapter" data-level="2" data-path="data-sources.html"><a href="data-sources.html"><i class="fa fa-check"></i><b>2</b> Data sources<span></span></a></li>
-<li class="chapter" data-level="3" data-path="data-transformation.html"><a href="data-transformation.html"><i class="fa fa-check"></i><b>3</b> Data transformation<span></span></a></li>
-<li class="chapter" data-level="4" data-path="missing-value.html"><a href="missing-value.html"><i class="fa fa-check"></i><b>4</b> Missing Value<span></span></a></li>
-<li class="chapter" data-level="5" data-path="results.html"><a href="results.html"><i class="fa fa-check"></i><b>5</b> Results<span></span></a></li>
-<li class="chapter" data-level="6" data-path="interactive-component.html"><a href="interactive-component.html"><i class="fa fa-check"></i><b>6</b> Interactive component<span></span></a></li>
-<li class="chapter" data-level="7" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>7</b> Conclusion<span></span></a></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="2" data-path="data-sources.html"><a href="data-sources.html"><i class="fa fa-check"></i><b>2</b> Data sources</a></li>
+<li class="chapter" data-level="3" data-path="data-transformation.html"><a href="data-transformation.html"><i class="fa fa-check"></i><b>3</b> Data transformation</a></li>
+<li class="chapter" data-level="4" data-path="missing-value.html"><a href="missing-value.html"><i class="fa fa-check"></i><b>4</b> Missing Value</a></li>
+<li class="chapter" data-level="5" data-path="results.html"><a href="results.html"><i class="fa fa-check"></i><b>5</b> Results</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="results.html"><a href="results.html#covid-19-progression-in-nyc"><i class="fa fa-check"></i><b>5.1</b> Covid-19 Progression in NYC</a></li>
+<li class="chapter" data-level="5.2" data-path="results.html"><a href="results.html#hate-crime-analysis-in-nyc-after-covid-exposure"><i class="fa fa-check"></i><b>5.2</b> Hate Crime Analysis in NYC After Covid Exposure</a></li>
+<li class="chapter" data-level="5.3" data-path="results.html"><a href="results.html#shooting-incidences-analysis-in-nyc-after-covid-exposure"><i class="fa fa-check"></i><b>5.3</b> Shooting Incidences Analysis in NYC After Covid Exposure</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="interactive-component.html"><a href="interactive-component.html"><i class="fa fa-check"></i><b>6</b> Interactive component</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="interactive-component.html"><a href="interactive-component.html#shooting-incidences-analysis-continued"><i class="fa fa-check"></i><b>6.1</b> Shooting Incidences Analysis Continued</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>7</b> Conclusion</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 </ul>
@@ -100,10 +182,124 @@
             <section class="normal" id="section-">
 <div id="data-transformation" class="section level1 hasAnchor" number="3">
 <h1><span class="header-section-number">Chapter 3</span> Data transformation<a href="data-transformation.html#data-transformation" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="data-transformation.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="data-transformation.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-3"><a href="data-transformation.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb1-4"><a href="data-transformation.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-5"><a href="data-transformation.html#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(devtools)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="data-transformation.html#cb2-1" aria-hidden="true" tabindex="-1"></a>data_by_day <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;data/data-by-day.csv&quot;</span>)</span>
+<span id="cb2-2"><a href="data-transformation.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(data_by_day)</span></code></pre></div>
+<p><em>data_by_day_over_areas</em> Dataset:</p>
+<ul>
+<li>first: the overall view of the summation over the 5 districts(BX, BK, MN, QN, SI)</li>
+</ul>
+<p>We use the <code>pivot longer</code> method here to transform the dataset into the tidy version. Meanwhile, we clean up so many category names by dropping the prefix(starts with BX, BK, MN, QN, SI) to decrease the size of the dataset. In addition, to keep this transformed dataset clean and as informative as possible, we generate a new variable called areas based on the district the row of recording belongs to. At the same time, we remove all the rows that are the summation of counts over the 5 districts.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="data-transformation.html#cb3-1" aria-hidden="true" tabindex="-1"></a>overall_transform <span class="ot">&lt;-</span> data_by_day  <span class="sc">%&gt;%</span> <span class="fu">pivot_longer</span>(<span class="sc">!</span>date_of_interest, <span class="at">names_to =</span> <span class="st">&#39;cases&#39;</span>, <span class="at">values_to =</span> <span class="st">&#39;count&#39;</span>)</span>
+<span id="cb3-2"><a href="data-transformation.html#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="data-transformation.html#cb3-3" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> overall_transform <span class="sc">%&gt;%</span></span>
+<span id="cb3-4"><a href="data-transformation.html#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">areas =</span> <span class="fu">case_when</span>(</span>
+<span id="cb3-5"><a href="data-transformation.html#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">startsWith</span>(cases, <span class="st">&quot;BX_&quot;</span>) <span class="sc">~</span> <span class="st">&quot;BX&quot;</span>,</span>
+<span id="cb3-6"><a href="data-transformation.html#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">startsWith</span>(cases, <span class="st">&quot;BK_&quot;</span>) <span class="sc">~</span> <span class="st">&quot;BK&quot;</span>,</span>
+<span id="cb3-7"><a href="data-transformation.html#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">startsWith</span>(cases, <span class="st">&quot;MN_&quot;</span>) <span class="sc">~</span> <span class="st">&quot;MN&quot;</span>,</span>
+<span id="cb3-8"><a href="data-transformation.html#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">startsWith</span>(cases, <span class="st">&quot;QN_&quot;</span>) <span class="sc">~</span> <span class="st">&quot;QN&quot;</span>,</span>
+<span id="cb3-9"><a href="data-transformation.html#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">startsWith</span>(cases, <span class="st">&quot;SI_&quot;</span>) <span class="sc">~</span> <span class="st">&quot;SI&quot;</span>,</span>
+<span id="cb3-10"><a href="data-transformation.html#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span><span class="sc">~</span> <span class="st">&quot;sum_nyc&quot;</span></span>
+<span id="cb3-11"><a href="data-transformation.html#cb3-11" aria-hidden="true" tabindex="-1"></a>    ))</span>
+<span id="cb3-12"><a href="data-transformation.html#cb3-12" aria-hidden="true" tabindex="-1"></a>df1 <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> <span class="fu">transform</span>(<span class="at">cases=</span><span class="fu">str_replace</span>(cases,<span class="st">&quot;BX_&quot;</span>,<span class="st">&quot;&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-13"><a href="data-transformation.html#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transform</span>(<span class="at">cases=</span><span class="fu">str_replace</span>(cases,<span class="st">&quot;BK_&quot;</span>,<span class="st">&quot;&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-14"><a href="data-transformation.html#cb3-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transform</span>(<span class="at">cases=</span><span class="fu">str_replace</span>(cases,<span class="st">&quot;MN_&quot;</span>,<span class="st">&quot;&quot;</span>)) <span class="sc">%&gt;%</span>  </span>
+<span id="cb3-15"><a href="data-transformation.html#cb3-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transform</span>(<span class="at">cases=</span><span class="fu">str_replace</span>(cases,<span class="st">&quot;QN_&quot;</span>,<span class="st">&quot;&quot;</span>)) <span class="sc">%&gt;%</span>  </span>
+<span id="cb3-16"><a href="data-transformation.html#cb3-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transform</span>(<span class="at">cases=</span><span class="fu">str_replace</span>(cases,<span class="st">&quot;SI_&quot;</span>,<span class="st">&quot;&quot;</span>))</span>
+<span id="cb3-17"><a href="data-transformation.html#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(df1)</span>
+<span id="cb3-18"><a href="data-transformation.html#cb3-18" aria-hidden="true" tabindex="-1"></a>df2 <span class="ot">=</span> df1 <span class="sc">%&gt;%</span> <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> cases, <span class="at">values_from =</span> count)</span>
+<span id="cb3-19"><a href="data-transformation.html#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="co">#drop the total_nyc value &amp; include &amp; compare only 5 districts</span></span>
+<span id="cb3-20"><a href="data-transformation.html#cb3-20" aria-hidden="true" tabindex="-1"></a>df3 <span class="ot">=</span> df2 <span class="sc">%&gt;%</span> <span class="fu">filter</span>(areas <span class="sc">!=</span> <span class="st">&quot;sum_nyc&quot;</span>)</span>
+<span id="cb3-21"><a href="data-transformation.html#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="co">#drop the incomplete column</span></span>
+<span id="cb3-22"><a href="data-transformation.html#cb3-22" aria-hidden="true" tabindex="-1"></a>df3 <span class="ot">&lt;-</span> df3[ <span class="sc">-</span><span class="fu">c</span>(<span class="dv">15</span>) ]</span>
+<span id="cb3-23"><a href="data-transformation.html#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(df3,<span class="st">&quot;/Users/victoriameng/Desktop/untitled folder/data_by_day_over_areas.csv&quot;</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<p>Deal with the missing value/NA in the dataset &amp; draw the plot to see the missing pattern:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="data-transformation.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(<span class="fu">is.na</span>(df3)) <span class="sc">%&gt;%</span></span>
+<span id="cb4-2"><a href="data-transformation.html#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sort</span>(<span class="at">decreasing =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<p>#consider by the sum:</p>
+<p><em>Now_weekly_breakthrough</em> Dataset:</p>
+<p>To facilitate our analysis on the COVID-19 weekly breakthrough csv file, we first clean all the column names of the dataset. Then we use the pivot longer method to transform all cases columns into row observations and record their values to a new column variable called count. Afterwards, we use the <code>case when</code> function to create a new categorical variable called <em>vacci_status</em> to divide this dataset into three new categories. All case names that start with <em>vaccinated_boosted</em> are classified as <em>fully_vaccinated</em>; all case names that start with <em>vaccinated_unboosted</em> are classified as <em>unboosted</em>; all case names that start with <em>unvaccinated</em> are classified as <em>unboosted</em>; and the others are recorded as <em>nyc_wide</em>(these observations are summarized category which show the total amount of cases shown in the NYC) Afterwards, to keep this dataset tidy and informative, we clean the cases names into a uniform form and we drop useless columns(such as <em>incomplete</em>).
+Finally, we further divide the dataset into two parts for the results part: one dataset only includes counts on the rate cases; another excludes all the rate observations and only include those counts that recorded in the integer format.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="data-transformation.html#cb5-1" aria-hidden="true" tabindex="-1"></a>now_weekly_breakthrough <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;data/now-weekly-breakthrough.csv&quot;</span>)</span>
+<span id="cb5-2"><a href="data-transformation.html#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#head(now_weekly_breakthrough)</span></span>
+<span id="cb5-3"><a href="data-transformation.html#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages(&#39;janitor&#39;)</span></span>
+<span id="cb5-4"><a href="data-transformation.html#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(janitor)</span>
+<span id="cb5-5"><a href="data-transformation.html#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="data-transformation.html#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">#can be done by simply</span></span>
+<span id="cb5-7"><a href="data-transformation.html#cb5-7" aria-hidden="true" tabindex="-1"></a>now_weekly_breakthrough <span class="ot">&lt;-</span> <span class="fu">clean_names</span>(now_weekly_breakthrough)</span>
+<span id="cb5-8"><a href="data-transformation.html#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(now_weekly_breakthrough)</span>
+<span id="cb5-9"><a href="data-transformation.html#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="data-transformation.html#cb5-10" aria-hidden="true" tabindex="-1"></a>overall_transform1 <span class="ot">&lt;-</span> now_weekly_breakthrough  <span class="sc">%&gt;%</span> </span>
+<span id="cb5-11"><a href="data-transformation.html#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">!</span>week_of_diagnosis, <span class="at">names_to =</span> <span class="st">&#39;cases&#39;</span>, <span class="at">values_to =</span> <span class="st">&#39;count&#39;</span>)</span>
+<span id="cb5-12"><a href="data-transformation.html#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="data-transformation.html#cb5-13" aria-hidden="true" tabindex="-1"></a>df5 <span class="ot">&lt;-</span> overall_transform1 <span class="sc">%&gt;%</span></span>
+<span id="cb5-14"><a href="data-transformation.html#cb5-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">vacci_status =</span> <span class="fu">case_when</span>(</span>
+<span id="cb5-15"><a href="data-transformation.html#cb5-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">startsWith</span>(cases, <span class="st">&quot;vaccinated_boosted&quot;</span>) <span class="sc">~</span> <span class="st">&quot;fully_vaccinated&quot;</span>,</span>
+<span id="cb5-16"><a href="data-transformation.html#cb5-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">startsWith</span>(cases, <span class="st">&quot;vaccinated_unboosted&quot;</span>) <span class="sc">~</span> <span class="st">&quot;unboosted&quot;</span>,</span>
+<span id="cb5-17"><a href="data-transformation.html#cb5-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">startsWith</span>(cases, <span class="st">&quot;unvaccinated&quot;</span>) <span class="sc">~</span> <span class="st">&quot;unvaccinated&quot;</span>,</span>
+<span id="cb5-18"><a href="data-transformation.html#cb5-18" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span><span class="sc">~</span> <span class="st">&quot;nyc_wide&quot;</span></span>
+<span id="cb5-19"><a href="data-transformation.html#cb5-19" aria-hidden="true" tabindex="-1"></a>    ))</span>
+<span id="cb5-20"><a href="data-transformation.html#cb5-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-21"><a href="data-transformation.html#cb5-21" aria-hidden="true" tabindex="-1"></a>df6 <span class="ot">&lt;-</span> df5 <span class="sc">%&gt;%</span> <span class="fu">transform</span>(<span class="at">cases=</span><span class="fu">str_replace</span>(cases,<span class="st">&quot;vaccinated_boosted_&quot;</span>,<span class="st">&quot;&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-22"><a href="data-transformation.html#cb5-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transform</span>(<span class="at">cases=</span><span class="fu">str_replace</span>(cases,<span class="st">&quot;vaccinated_unboosted_&quot;</span>,<span class="st">&quot;&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-23"><a href="data-transformation.html#cb5-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transform</span>(<span class="at">cases=</span><span class="fu">str_replace</span>(cases,<span class="st">&quot;unvaccinated_&quot;</span>,<span class="st">&quot;&quot;</span>)) <span class="sc">%&gt;%</span>  </span>
+<span id="cb5-24"><a href="data-transformation.html#cb5-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transform</span>(<span class="at">cases=</span><span class="fu">str_replace</span>(cases,<span class="st">&quot;citywide_&quot;</span>,<span class="st">&quot;&quot;</span>))</span>
+<span id="cb5-25"><a href="data-transformation.html#cb5-25" aria-hidden="true" tabindex="-1"></a>df7 <span class="ot">=</span> df6 <span class="sc">%&gt;%</span> <span class="fu">filter</span>(cases<span class="sc">!=</span><span class="st">&quot;incomplete&quot;</span>) </span>
+<span id="cb5-26"><a href="data-transformation.html#cb5-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-27"><a href="data-transformation.html#cb5-27" aria-hidden="true" tabindex="-1"></a>df10 <span class="ot">=</span> df7[<span class="fu">grepl</span>(<span class="st">&#39;rate&#39;</span>, df7<span class="sc">$</span>cases),]</span>
+<span id="cb5-28"><a href="data-transformation.html#cb5-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-29"><a href="data-transformation.html#cb5-29" aria-hidden="true" tabindex="-1"></a>df11 <span class="ot">=</span> df10 <span class="sc">%&gt;%</span> <span class="fu">filter</span>(vacci_status <span class="sc">!=</span> <span class="st">&quot;nyc_wide&quot;</span>)</span>
+<span id="cb5-30"><a href="data-transformation.html#cb5-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-31"><a href="data-transformation.html#cb5-31" aria-hidden="true" tabindex="-1"></a>df8 <span class="ot">=</span> df7[<span class="sc">!</span><span class="fu">grepl</span>(<span class="st">&#39;rate&#39;</span>, df7<span class="sc">$</span>cases),]</span>
+<span id="cb5-32"><a href="data-transformation.html#cb5-32" aria-hidden="true" tabindex="-1"></a>df8</span>
+<span id="cb5-33"><a href="data-transformation.html#cb5-33" aria-hidden="true" tabindex="-1"></a>df9 <span class="ot">=</span> df8 <span class="sc">%&gt;%</span> <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> cases, <span class="at">values_from =</span> count)</span>
+<span id="cb5-34"><a href="data-transformation.html#cb5-34" aria-hidden="true" tabindex="-1"></a>df9</span>
+<span id="cb5-35"><a href="data-transformation.html#cb5-35" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(df11,<span class="st">&quot;data/now_weekly_breakthrough_rate.csv&quot;</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb5-36"><a href="data-transformation.html#cb5-36" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(df8,<span class="st">&quot;data/now_weekly_breakthrough_transform.csv&quot;</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<p>#there is no missing value:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="data-transformation.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># by column</span></span>
+<span id="cb6-2"><a href="data-transformation.html#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(<span class="fu">is.na</span>(df8)) <span class="sc">%&gt;%</span></span>
+<span id="cb6-3"><a href="data-transformation.html#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sort</span>(<span class="at">decreasing =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<p>#Further data transformation for plotting</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="data-transformation.html#cb7-1" aria-hidden="true" tabindex="-1"></a>data_by_day <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;data/data_by_day_transform_dataset.csv&quot;</span>)</span>
+<span id="cb7-2"><a href="data-transformation.html#cb7-2" aria-hidden="true" tabindex="-1"></a>data_by_day_over_areas <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;data/data_by_day_over_areas.csv&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="data-transformation.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Total Counts by boroughs </span></span>
+<span id="cb8-2"><a href="data-transformation.html#cb8-2" aria-hidden="true" tabindex="-1"></a>data_by_day_totals <span class="ot">&lt;-</span> data_by_day <span class="sc">%&gt;%</span></span>
+<span id="cb8-3"><a href="data-transformation.html#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">2</span><span class="sc">:</span><span class="dv">6</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb8-4"><a href="data-transformation.html#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> CASE_COUNT<span class="sc">:</span>DEATH_COUNT, <span class="at">names_to =</span> <span class="st">&quot;Type&quot;</span>, <span class="at">values_to =</span> <span class="st">&quot;Count&quot;</span>)  <span class="sc">%&gt;%</span></span>
+<span id="cb8-5"><a href="data-transformation.html#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(areas, Type) <span class="sc">%&gt;%</span></span>
+<span id="cb8-6"><a href="data-transformation.html#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">totals =</span> <span class="fu">sum</span>(Count))</span>
+<span id="cb8-7"><a href="data-transformation.html#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="data-transformation.html#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">#By month</span></span>
+<span id="cb8-9"><a href="data-transformation.html#cb8-9" aria-hidden="true" tabindex="-1"></a>data_by_month <span class="ot">&lt;-</span> data_by_day <span class="sc">%&gt;%</span> </span>
+<span id="cb8-10"><a href="data-transformation.html#cb8-10" aria-hidden="true" tabindex="-1"></a>   <span class="fu">mutate</span>(<span class="at">date_of_interest =</span> <span class="fu">as.Date</span>(date_of_interest, <span class="st">&quot;%m/%d/%Y&quot;</span>),</span>
+<span id="cb8-11"><a href="data-transformation.html#cb8-11" aria-hidden="true" tabindex="-1"></a>          <span class="at">month_of_interest =</span> <span class="fu">floor_date</span>(date_of_interest, <span class="at">unit =</span> <span class="st">&quot;month&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb8-12"><a href="data-transformation.html#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">c</span>(<span class="dv">15</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">5</span>,<span class="dv">6</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb8-13"><a href="data-transformation.html#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(areas, month_of_interest) <span class="sc">%&gt;%</span></span>
+<span id="cb8-14"><a href="data-transformation.html#cb8-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">case_total =</span> <span class="fu">sum</span>(CASE_COUNT),</span>
+<span id="cb8-15"><a href="data-transformation.html#cb8-15" aria-hidden="true" tabindex="-1"></a>            <span class="at">hospitalized_total =</span> <span class="fu">sum</span>(HOSPITALIZED_COUNT),</span>
+<span id="cb8-16"><a href="data-transformation.html#cb8-16" aria-hidden="true" tabindex="-1"></a>            <span class="at">death_total =</span> <span class="fu">sum</span>(DEATH_COUNT))</span>
+<span id="cb8-17"><a href="data-transformation.html#cb8-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-18"><a href="data-transformation.html#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="co"># change death to negative values </span></span>
+<span id="cb8-19"><a href="data-transformation.html#cb8-19" aria-hidden="true" tabindex="-1"></a>data_by_month <span class="ot">&lt;-</span> data_by_month <span class="sc">%&gt;%</span> </span>
+<span id="cb8-20"><a href="data-transformation.html#cb8-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">death_total =</span> death_total<span class="sc">*-</span><span class="dv">1</span>)</span>
+<span id="cb8-21"><a href="data-transformation.html#cb8-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-22"><a href="data-transformation.html#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="co"># only case totals</span></span>
+<span id="cb8-23"><a href="data-transformation.html#cb8-23" aria-hidden="true" tabindex="-1"></a>case_total_longer <span class="ot">&lt;-</span> data_by_month <span class="sc">%&gt;%</span></span>
+<span id="cb8-24"><a href="data-transformation.html#cb8-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="data-transformation.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># removing case_total, only keeping hospitalized and death totals. </span></span>
+<span id="cb9-2"><a href="data-transformation.html#cb9-2" aria-hidden="true" tabindex="-1"></a>data_by_month_longer <span class="ot">&lt;-</span> data_by_month <span class="sc">%&gt;%</span></span>
+<span id="cb9-3"><a href="data-transformation.html#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>case_total) <span class="sc">%&gt;%</span></span>
+<span id="cb9-4"><a href="data-transformation.html#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> hospitalized_total<span class="sc">:</span>death_total, <span class="at">names_to =</span> <span class="st">&quot;types&quot;</span>, <span class="at">values_to =</span> <span class="st">&quot;number&quot;</span>)</span></code></pre></div>
 
 </div>
             </section>
-           </div>
+
+          </div>
         </div>
       </div>
 <a href="data-sources.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
@@ -138,7 +334,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/xm2277/Covid-Crime-Relationship-Analysis/edit/main/03-data-transformation.Rmd",
+"link": "https://github.com/xm2277/Covid-Crime-Relationship-Analysis/edit/main/03-Data-transformation.Rmd",
 "text": "Edit"
 },
 "history": {
@@ -146,7 +342,7 @@ gitbook.start({
 "text": null
 },
 "view": {
-"link": "https://github.com/xm2277/Covid-Crime-Relationship-Analysis/blob/main/03-data-transformation.Rmd",
+"link": "https://github.com/xm2277/Covid-Crime-Relationship-Analysis/blob/main/03-Data-transformation.Rmd",
 "text": null
 },
 "download": null,
