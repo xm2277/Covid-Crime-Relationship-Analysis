@@ -64,10 +64,6 @@ To deal with those missing value, as we are not quite interested in variable *HO
 Consider about the correlation between the variables in the dataset:
 
 ```{r, echo = T}
-data_by_day
-```
-
-```{r, echo = T}
 library(corrplot)
 library(RColorBrewer)
 source("http://www.sthda.com/upload/rquery_cormat.r")
